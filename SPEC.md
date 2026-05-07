@@ -2,7 +2,7 @@
 
 ## Overview
 
-A Go CLI client for the MyMind API. Compiles to a single static binary with zero runtime dependencies. Designed for agent-native use: Claude Code, OpenAI agents, shell scripts, and direct human use.
+A Go CLI client for the MyMind API. Compiles to a single static binary with zero runtime dependencies.
 
 ## Building
 

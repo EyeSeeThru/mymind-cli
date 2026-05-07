@@ -70,24 +70,6 @@ JWT: fresh HS256 per request, `exp = iat + 300`, bound to `method + path`.
 | 4 | Network error |
 | 5 | Rate-limited (429, auto-retry) |
 
-## Agent-Native Design
-
-This CLI is designed for any AI agent that can run subprocess commands — Claude Code, OpenAI agents, Hermes Agent, OpenClaw, shell scripts, etc.
-
-For Claude Code and Hermes Agent, a skill is included at `~/.hermes/skills/mymind/SKILL.md` that provides the full command reference.
-
-Example agent usage:
-```bash
-# Save a link
-mymind objects create --url "$URL" --tag "$TAG"
-
-# Query with semantic search
-mymind search "p5.js creative coding" --semantic --json
-
-# Find similar objects
-mymind search --similar-to "$OBJECT_ID"
-```
-
 ## Credits
 
 Inspired by [mm](https://github.com/martinbavio/mm) by Martin Bavio.
