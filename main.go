@@ -359,37 +359,41 @@ func authCmd() *cobra.Command {
 // ─── Objects subcommands ───────────────────────────────────────────────────────
 
 func objectsListCmd() *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:   "list",
 		Short: "List objects",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			q, _ := cmd.Flags().GetString("query")
 			space, _ := cmd.Flags().GetString("space")
 			ids, _ := cmd.Flags().GetString("ids")
-			limit, _ := cmd.Flags().GetInt("limit")
-			contentAs, _ := cmd.Flags().GetString("content-as")
+		similarTo, _ := cmd.Flags().GetString("similar-to")
+		limit, _ := cmd.Flags().GetInt("limit")
+		contentAs, _ := cmd.Flags().GetString("content-as")
 
-			c, err := clientFromAuth()
-			if err != nil {
-				return err
-			}
-			argsMap := map[string]interface{}{}
-			if q != "" {
-				argsMap["q"] = q
-			}
-			if space != "" {
-				argsMap["spaceId"] = space
-			}
-			if ids != "" {
-				idsList := strings.Split(ids, ",")
-				argsMap["ids"] = idsList
-			}
-			if limit > 0 {
-				argsMap["limit"] = limit
-			}
-			if contentAs != "" {
-				argsMap["contentAs"] = contentAs
-			}
+		c, err := clientFromAuth()
+		if err != nil {
+			return err
+		}
+		argsMap := map[string]interface{}{}
+		if q != "" {
+			argsMap["q"] = q
+		}
+		if space != "" {
+			argsMap["spaceId"] = space
+		}
+		if ids != "" {
+			idsList := strings.Split(ids, ",")
+			argsMap["ids"] = idsList
+		}
+		if limit > 0 {
+			argsMap["limit"] = limit
+		}
+		if contentAs != "" {
+			argsMap["contentAs"] = contentAs
+		}
+		if similarTo != "" {
+			argsMap["similarTo"] = similarTo
+		}
 			result, err := c.ListObjects(argsMap, requestOpts())
 			if err != nil {
 				return err
@@ -398,6 +402,13 @@ func objectsListCmd() *cobra.Command {
 			return nil
 		},
 	}
+	cmd.Flags().String("query", "", "Search/filter query")
+	cmd.Flags().String("space", "", "Filter by space ID")
+	cmd.Flags().String("ids", "", "Comma-separated object IDs")
+	cmd.Flags().String("similar-to", "", "Rank results by similarity to this object ID")
+	cmd.Flags().IntP("limit", "l", 100, "Max results")
+	cmd.Flags().String("content-as", "", "Content format (text/markdown, application/prose+json, text/html)")
+	return cmd
 }
 
 func objectsGetCmd() *cobra.Command {
